@@ -1,14 +1,14 @@
 from django.db import models
 
 
-class Page(models.Model):
-    title = models.CharField(max_length=100, null=False, blank=False)
-    description = models.CharField(max_length=300)
-    created_at = models.DateTimeField(
-        auto_now_add=True, null=False, blank=False
-    )
+class Pages(models.Model):
+    class Meta:
+        db_table = "Pages"
 
-    @classmethod
-    def create(cls, title, description):
-        page = cls(title=title, description=description)
-        return page
+    url = models.CharField(
+        max_length=100, blank=False, null=False, default="", unique=True
+    )
+    title = models.CharField(
+        max_length=200, null=False, blank=False, default=""
+    )
+    description = models.TextField(null=False, blank=False, default="")
