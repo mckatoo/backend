@@ -4,7 +4,6 @@ from django.utils.timezone import now
 
 
 class Projects(models.Model):
-
     class Meta:
         db_table = "Projects"
         verbose_name_plural = "Projects"

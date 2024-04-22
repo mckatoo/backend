@@ -4,6 +4,8 @@ from django.utils.text import slugify
 
 
 class Pages(models.Model):
+    summernote_fields = '__all__'
+
     class Meta:
         db_table = "Pages"
         verbose_name_plural = "Pages"
