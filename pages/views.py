@@ -1,13 +1,12 @@
-from django.http import JsonResponse
+from django.http.response import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import get_object_or_404
-from django.forms.models import model_to_dict
-
 from pages.models import Pages
 
 
 @require_http_methods(["GET"])
-def get_pages(request, page):
-    data = get_object_or_404(Pages, url=page)
+def get_pages(_, page):
+    data = get_object_or_404(Pages, slug=page)
+    json = data.__json__()
 
-    return JsonResponse(model_to_dict(data), safe=False)
+    return JsonResponse(json)
