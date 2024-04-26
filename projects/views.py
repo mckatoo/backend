@@ -1,14 +1,39 @@
-from django.http.response import HttpResponse
-from django.views.decorators.http import require_http_methods
+from rest_framework.views import APIView, Response, status
 
 from projects.models import Projects
+from projects.serializers import ProjectSerializer
 
-from utils.to_json import queryset_to_json
+
+class ListProjects(APIView):
+    def get(self, _):
+        data = ProjectSerializer(Projects.objects.all(), many=True).data
+        return Response(data)
 
 
-@require_http_methods(["GET"])
-def list_projects(request):
-    projects = Projects.objects.all()
-    json_data = queryset_to_json(projects)
+class GetUpdateDeleteProject(APIView):
+    def get(self, _, pk):
+        serializer = ProjectSerializer(Projects.objects.get(id=pk))
+        return Response(serializer.data)
 
-    return HttpResponse(json_data, content_type="application/json")
+    def patch(self, request, pk):
+        serializer = ProjectSerializer(
+            Projects.objects.get(id=pk), data=request.data, partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def delete(self, request, pk):
+        Projects.objects.get(id=pk).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CreateProject(APIView):
+    def post(self, request):
+        serializer = ProjectSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+                dict(serializer.data)["id"],
+                status=status.HTTP_201_CREATED
+                )

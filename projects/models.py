@@ -1,5 +1,4 @@
 from django.db import models
-from django.forms import model_to_dict
 from django.utils.timezone import now
 
 
@@ -23,6 +22,3 @@ class Projects(models.Model):
 
     def __str__(self):
         return self.title.__str__()
-
-    def __json__(self):
-        return model_to_dict(self)
