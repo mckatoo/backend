@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.timezone import now
 
+from skills.models import Skills
+
 
 class Projects(models.Model):
     class Meta:
@@ -13,7 +15,7 @@ class Projects(models.Model):
     repository_link = models.URLField(blank=False, null=False)
     start = models.DateField()
     last_update = models.DateField()
-    # skills
+    skills = models.ManyToManyField(Skills)
 
     def save(self, *args, **kargs):
         if not self.start:

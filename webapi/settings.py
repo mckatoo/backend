@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "pages.apps.PagesConfig",
     "projects.apps.ProjectsConfig",
+    "skills.apps.SkillsConfig",
 ]
 
 MIDDLEWARE = [
