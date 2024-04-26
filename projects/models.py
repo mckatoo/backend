@@ -23,4 +23,4 @@ class Projects(models.Model):
         return super(Projects, self).save(*args, **kargs)
 
     def __str__(self):
-        return self.title.__str__()
+        return f"{self.pk} - {self.title}"

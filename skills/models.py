@@ -11,4 +11,4 @@ class Skills(models.Model):
     )
 
     def __str__(self):
-        return self.title.__str__()
+        return f"{self.pk} - {self.title}"
