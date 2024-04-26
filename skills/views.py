@@ -1,12 +1,40 @@
-from django.http.response import HttpResponse
-from django.views.decorators.http import require_http_methods
+from rest_framework.views import APIView, Response, status
+
 from skills.models import Skills
-from utils.to_json import queryset_to_json
+from skills.serializers import SkillSerializer
 
 
-@require_http_methods(["GET"])
-def list_skills(request):
-    skills = Skills.objects.all()
-    json_data = queryset_to_json(skills)
 
-    return HttpResponse(json_data, content_type="application/json")
+class ListSkills(APIView):
+    def get(self, _):
+        data = SkillSerializer(Skills.objects.all(), many=True).data
+        return Response(data)
+
+
+class GetUpdateDeleteSkill(APIView):
+    def get(self, _, pk):
+        serializer = SkillSerializer(Skills.objects.get(id=pk))
+        return Response(serializer.data)
+
+    def patch(self, request, pk):
+        serializer = SkillSerializer(
+            Skills.objects.get(id=pk), data=request.data, partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def delete(self, request, pk):
+        Skills.objects.get(id=pk).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CreateSkill(APIView):
+    def post(self, request):
+        serializer = SkillSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+                dict(serializer.data)["id"],
+                status=status.HTTP_201_CREATED
+                )
