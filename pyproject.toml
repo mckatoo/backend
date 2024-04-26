@@ -12,7 +12,6 @@ django = "^5.0.4"
 flake8 = "^7.0.0"
 python-decouple = "^3.8"
 django-cors-headers = "^4.3.1"
-django-types = "^0.19.1"
 django-summernote = "^0.8.20.0"
 djangorestframework = "^3.15.1"
 
