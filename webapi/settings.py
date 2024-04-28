@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "pages.apps.PagesConfig",
     "projects.apps.ProjectsConfig",
     "skills.apps.SkillsConfig",
+    "images.apps.ImagesConfig",
 ]
 
 MIDDLEWARE = [
