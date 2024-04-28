@@ -1,12 +1,9 @@
-from django.http.response import JsonResponse
-from django.views.decorators.http import require_http_methods
-from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView, Response
 from pages.models import Pages
+from pages.serializers import PageSerializer
 
 
-@require_http_methods(["GET"])
-def get_pages(_, page):
-    data = get_object_or_404(Pages, slug=page)
-    json = data.__json__()
-
-    return JsonResponse(json)
+class GetPage(APIView):
+    def get(self, _, page):
+        data = PageSerializer(Pages.objects.get(slug=page)).data
+        return Response(data)
