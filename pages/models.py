@@ -20,7 +20,7 @@ class Pages(models.Model):
         return super().save()
 
     def __str__(self):
-        return f"{self.pk} - {self.title} - {self.slug}"
+        return f"{self.pk} - {self.slug} - {self.title}"
 
     def __json__(self):
         return model_to_dict(self)
