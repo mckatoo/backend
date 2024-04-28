@@ -1,7 +1,7 @@
 from django.urls import path
 
-from pages.views import get_pages
+from pages.views import GetPage
 
 urlpatterns = [
-    path("<slug:page>/", get_pages, name="pages"),
+    path("<slug:page>/", GetPage.as_view()),
 ]
