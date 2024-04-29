@@ -1,5 +1,6 @@
 from rest_framework.exceptions import status
 from rest_framework.views import APIView, Response
+from rest_framework.decorators import api_view
 from pages.models import Pages
 from pages.serializers import PageSerializer
 
@@ -22,11 +23,11 @@ class GetUpdateDeletePage(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class CreatePage(APIView):
-    def post(self, request):
-        serializer = PageSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(
-            dict(serializer.data)["id"], status=status.HTTP_201_CREATED
-        )
+@api_view(['POST'])
+def create_page(request):
+    serializer = PageSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(
+        dict(serializer.data)["id"], status=status.HTTP_201_CREATED
+    )
