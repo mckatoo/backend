@@ -1,7 +1,8 @@
 from django.urls import path
 
-from pages.views import GetPage
+from pages.views import CreatePage, GetUpdateDeletePage
 
 urlpatterns = [
-    path("<slug:page>/", GetPage.as_view()),
+    path("page/<slug:page>/", GetUpdateDeletePage.as_view()),
+    path("page/", CreatePage.as_view()),
 ]
