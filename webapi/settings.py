@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "projects.apps.ProjectsConfig",
     "skills.apps.SkillsConfig",
     "images.apps.ImagesConfig",
+    "mailer.apps.MailerConfig",
 ]
 
 MIDDLEWARE = [
@@ -103,6 +104,16 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
+
+# https://docs.djangoproject.com/en/5.0/ref/settings/#std-setting-EMAIL_HOST
+EMAIL_HOST = config("SMTP_SERVER_ADDRESS")
+EMAIL_PORT = config("SMTP_SERVER_PORT")
+EMAIL_HOST_USER = config("SMTP_USERNAME")
+EMAIL_HOST_PASSWORD = config("SMTP_PASSWORD")
+# EMAIL_SUBJECT_PREFIX = config("EMAIL_SUBJECT_PREFIX")
+# EMAIL_USE_LOCALTIME = True
+# EMAIL_USE_TLS = config("SMTP_SECURE")
+EMAIL_USE_SSL = config("SMTP_SECURE")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
