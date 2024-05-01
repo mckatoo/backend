@@ -16,21 +16,40 @@ cloudinary.config(
 folder = config("CLOUDINARY_FOLDER")
 
 
-class GetUploadDeleteImage(APIView):
-    def get(self, request):
-        return Response()
-
+class PostGetDeleteImage(APIView):
     def post(self, request):
         image = request.FILES["file"]
-        response = cloudinary.uploader.upload(image, folder=folder)
+        try:
+            response = cloudinary.uploader.upload(image, folder=folder)
+            public_id = response["public_id"]
+            secure_url = response["secure_url"]
+        except Exception as e:
+            raise e
 
         return Response(
             {
-                "url": response['secure_url'],
-                "publicId": response['public_id'],
+                "url": secure_url,
+                "publicId": public_id,
             },
             status=status.HTTP_201_CREATED,
         )
 
+    def get(self, request):
+        public_id = request.data["id"]
+        try:
+            result = cloudinary.api.resource(public_id)
+        except Exception as e:
+            if isinstance(e, cloudinary.api.NotFound):
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            raise e
+        return Response({"url": result["url"]})
+
     def delete(self, request):
+        public_id = request.data["id"]
+        try:
+            cloudinary.uploader.destroy(public_id)
+        except Exception as e:
+            if isinstance(e, cloudinary.api.NotFound):
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            raise e
         return Response(status=status.HTTP_204_NO_CONTENT)
