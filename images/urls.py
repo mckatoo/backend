@@ -1,6 +1,8 @@
 from django.urls import path
 
-from images.views import GetUploadDeleteImage
+from images.views import PostGetDeleteImage
 
 
-urlpatterns = [path("image/", GetUploadDeleteImage.as_view())]
+urlpatterns = [
+    path("image/", PostGetDeleteImage.as_view()),
+]
