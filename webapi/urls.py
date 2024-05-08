@@ -3,7 +3,6 @@ from django.http.response import JsonResponse
 from django.urls import include, path
 from django.conf.urls.static import static
 
-
 from webapi import settings
 
 
@@ -13,14 +12,14 @@ def get_version(request):
 
 
 urlpatterns = [
-    path("", include("projects.urls")),
-    path("", include("skills.urls")),
-    path("", include("mailer.urls")),
-    path("", include("images.urls")),
-    path("", include("pages.urls")),
-    path("", get_version, name="version"),
+    path("api/", include("projects.urls")),
+    path("api/", include("skills.urls")),
+    path("api/", include("mailer.urls")),
+    path("api/", include("images.urls")),
+    path("api/", include("pages.urls")),
+    path("api/", get_version, name="version"),
+    path("api/auth/", include("authentication.urls")),
     path("admin/", admin.site.urls),
-    path("auth/", include("rest_framework.urls")),
     path("summernote/", include("django_summernote.urls")),
 ]
 

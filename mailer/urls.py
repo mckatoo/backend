@@ -1,6 +1,6 @@
-from django.urls import path
+from django.urls import re_path
 
 from mailer.views import send
 
 
-urlpatterns = [path("mailer/", send)]
+urlpatterns = [re_path("^mailer/?$", send)]
