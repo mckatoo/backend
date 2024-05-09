@@ -8,6 +8,8 @@ SECRET_KEY = config("PRIVATE_KEY")
 
 DEBUG = config("DEBUG", cast=bool, default=False)
 
+APPEND_SLASH = False
+
 CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", cast=Csv())
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 
@@ -21,11 +23,13 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_summernote",
     "rest_framework",
+    "rest_framework.authtoken",
     "pages.apps.PagesConfig",
     "projects.apps.ProjectsConfig",
     "skills.apps.SkillsConfig",
     "images.apps.ImagesConfig",
     "mailer.apps.MailerConfig",
+    "authentication.apps.AuthenticationConfig",
 ]
 
 MIDDLEWARE = [
@@ -63,13 +67,13 @@ DATABASES = {
     "default": (
         {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": config("POSTGRES_DBNAME"),
+            "NAME": config("POSTGRES_DB"),
             "USER": config("POSTGRES_USER"),
             "PASSWORD": config("POSTGRES_PASSWORD"),
             "HOST": config("POSTGRES_HOSTNAME"),
             "PORT": "5432",
         }
-        if DEV_ENV
+        if DEV_ENV==False
         else {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
@@ -117,7 +121,13 @@ EMAIL_USE_SSL = config("SMTP_SECURE")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-#     'PAGE_SIZE': 10
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'authentication.keycloak.KeycloakAuthentication',
+    ]
+}
+
+KEYCLOAK_SERVER_URL = config("KEYCLOAK_SERVER_URL")
+KEYCLOAK_REALM = config("KEYCLOAK_REALM")
+KEYCLOAK_CLIENT_ID = config("KEYCLOAK_CLIENT_ID")
