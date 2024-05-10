@@ -42,7 +42,7 @@ def sign_out(_):
     return Response()
 
 
-@api_view(["POST"])
+@api_view(["GET"])
 def verify(_):
     return Response()
 

@@ -1,9 +1,11 @@
-from rest_framework.decorators import permission_classes
-from rest_framework.views import APIView, Response, status
-from rest_framework.permissions import IsAuthenticated
-
 from camel_converter import dict_to_snake
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.permissions import (
+    IsAuthenticated,
+)
+from rest_framework.views import APIView, Response, status
 
+from authentication.keycloak import KeycloakAuthentication
 from projects.models import Projects
 from projects.serializers import ProjectSerializer
 
@@ -19,6 +21,7 @@ class GetUpdateDeleteProject(APIView):
         serializer = ProjectSerializer(Projects.objects.get(id=pk))
         return Response(serializer.data)
 
+    @authentication_classes([KeycloakAuthentication])
     @permission_classes([IsAuthenticated])
     def patch(self, request, pk):
         serializer = ProjectSerializer(
@@ -28,6 +31,7 @@ class GetUpdateDeleteProject(APIView):
         serializer.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    @authentication_classes([KeycloakAuthentication])
     @permission_classes([IsAuthenticated])
     def delete(self, request, pk):
         Projects.objects.get(id=pk).delete()
@@ -35,6 +39,7 @@ class GetUpdateDeleteProject(APIView):
 
 
 class CreateProject(APIView):
+    authentication_classes = [KeycloakAuthentication]
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
