@@ -1,3 +1,4 @@
+from enum import unique
 from django.db import models
 
 from skills.models import Skills
@@ -8,7 +9,7 @@ class Projects(models.Model):
         db_table = "Projects"
         verbose_name_plural = "Projects"
 
-    title = models.CharField(max_length=200, blank=False, null=False)
+    title = models.CharField(max_length=200, blank=False, null=False, unique=True)
     description = models.TextField(blank=False, null=False)
     snapshot = models.CharField(max_length=200, blank=False, null=False)
     repository_link = models.URLField(blank=False, null=False)
