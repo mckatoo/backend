@@ -1,7 +1,7 @@
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.http.response import JsonResponse
 from django.urls import include, path
-from django.conf.urls.static import static
 
 from webapi import settings
 
@@ -21,6 +21,7 @@ urlpatterns = [
     path("api/auth/", include("authentication.urls")),
     path("admin/", admin.site.urls),
     path("summernote/", include("django_summernote.urls")),
+    path("accounts/", include("allauth.urls")),
 ]
 
 if settings.DEBUG:

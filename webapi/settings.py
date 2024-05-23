@@ -1,5 +1,6 @@
 from pathlib import Path
-from decouple import Csv, config, os
+from decouple import Csv, config
+import os
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,6 +21,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount.providers.auth0',
     "corsheaders",
     "django_summernote",
     "rest_framework",
@@ -41,6 +45,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "webapi.urls"
@@ -48,7 +53,7 @@ ROOT_URLCONF = "webapi.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -127,6 +132,24 @@ REST_FRAMEWORK = {
     ]
 }
 
-KEYCLOAK_SERVER_URL = config("KEYCLOAK_SERVER_URL")
-KEYCLOAK_REALM = config("KEYCLOAK_REALM")
-KEYCLOAK_CLIENT_ID = config("KEYCLOAK_CLIENT_ID")
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
+        }
+    },
+    'auth0': {
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
+        }
+    }
+}
